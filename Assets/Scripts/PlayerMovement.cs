@@ -18,14 +18,14 @@ namespace Songeul
 
         void Move()
         {
-            movement.x =  Input.GetAxis("Horizontal");
-            movement.z =  Input.GetAxis("Vertical");
-            movement.Normalize();
-            rigid.velocity = movement * walkSpeed;
+            float h =  Input.GetAxis("Horizontal");
+            float v =  Input.GetAxis("Vertical");
+            movement = transform.forward * v + transform.right * h;
+            transform.position += movement.normalized * walkSpeed * Time.deltaTime;
 
             if (Input.GetKey(KeyCode.LeftControl) && movement.magnitude > 0.1f)
             {
-                rigid.velocity = movement * runSpeed;
+                transform.position += movement * runSpeed * Time.deltaTime;
             }
         }
 
