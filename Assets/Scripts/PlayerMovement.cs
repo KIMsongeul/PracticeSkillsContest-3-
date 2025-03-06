@@ -9,8 +9,8 @@ namespace Songeul
     {
         private float walkSpeed = 4f;
         private float runSpeed = 6f;
-        private float jumpPower;
-        private int jumpCnt;
+        private float jumpPower = 35f;
+        private int jumpCnt = 0;
         private Vector3 movement;
         
         private Rigidbody rigid;
@@ -27,7 +27,18 @@ namespace Songeul
             {
                 rigid.velocity = movement * runSpeed;
             }
-            
+        }
+
+        void Jump()
+        {
+            if (jumpCnt < 2)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    rigid.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+                    jumpCnt++;
+                }
+            }
         }
 
         private void FixedUpdate()
@@ -35,9 +46,25 @@ namespace Songeul
             Move();
         }
 
+        private void Update()
+        {
+            Jump();
+            
+            //점프 후 착지를 빠르게 해주기위한 코드
+            Physics.gravity = new Vector3(0, -50f, 0);
+        }
+
         private void Start()
         {
             rigid = GetComponent<Rigidbody>();
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.gameObject.CompareTag("Object"))
+            {
+                jumpCnt = 0;
+            }
         }
     }
 }
