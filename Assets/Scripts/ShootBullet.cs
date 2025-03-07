@@ -8,6 +8,7 @@ namespace Songeul
     public class ShootBullet : MonoBehaviour
     {
         CrossHair crosshair;
+        public GameObject bullet;
         private void Update()
         {
             
@@ -17,6 +18,7 @@ namespace Songeul
         {
             if (Input.GetMouseButton(0))
             {
+                Instantiate(bullet, transform.position, transform.rotation);
                 crosshair.Crosshair_animation();
             }
         }
